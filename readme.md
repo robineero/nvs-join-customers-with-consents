@@ -1,0 +1,1 @@
+# Python script to join customers and consents
