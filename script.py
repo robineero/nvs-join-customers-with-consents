@@ -1,6 +1,10 @@
 import sys
 import csv
 import datetime
+import pandas as pd
+import openpyxl
+
+# https://github.com/robineero/nvs-join-customers-with-consents
 
 if (len(sys.argv) < 2):
     print("ERROR: Please add customers and consents CSV files as arguments.\n")
@@ -84,9 +88,10 @@ def join_customers_consents(customers, consents):
 
     current_time = datetime.datetime.now()
     current_current_string = current_time.strftime('%y%m%d-%H%M')
-    filename = "customers_consents_%s.csv" % (current_current_string)
+    filename_csv = "customers_consents_%s.csv" % (current_current_string)
+    filename_xlsx = "customers_consents_%s.xlsx" % (current_current_string)
 
-    with open(filename, "w", newline='', encoding='utf-8') as new_file:
+    with open(filename_csv, "w", newline='', encoding='utf-8') as new_file:
 
         csv_writer = csv.writer(new_file)
         csv_writer.writerow(customers['header'].get('line') + consents['header'].get('line'))
@@ -95,6 +100,10 @@ def join_customers_consents(customers, consents):
             if (key == "header"): continue
             customer_consent = consents.get(key).get('line') if consents.get(key) else []
             csv_writer.writerow(customers[key].get('line') + customer_consent)
+
+    # Convert cvs to xlsx
+    df = pd.read_csv(filename_csv)
+    df.to_excel(filename_xlsx, sheet_name="Sheet1", index=False)
 
     return True
 
