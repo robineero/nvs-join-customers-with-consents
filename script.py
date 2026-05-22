@@ -2,7 +2,6 @@ import sys
 import csv
 import datetime
 import pandas as pd
-import openpyxl
 
 # https://github.com/robineero/nvs-join-customers-with-consents
 
